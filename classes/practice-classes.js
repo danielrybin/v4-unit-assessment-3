@@ -10,11 +10,20 @@
       - This returns a string of 'This is a TYPE character named NAME.'
       - Example: 'This is a robot character named Clank.'
 
-  Call your class Character and receive the data in the constructor in the order listed above. 
+  Call your class Character and receive the data in the constructor in the order listed above.
   Be sure to match the capitalization and punctuation of the string.
 */
 
-//CODE HERE
+class Character {
+  constructor(name, type) {
+    this.type = type;
+    this.name = name;
+  }
+
+  getInfo() {
+    return `This is a ${this.type} character named ${this.name}.`
+  }
+}
 
 //////////////////PROBLEM 2////////////////////
 
@@ -32,14 +41,24 @@
   Call your new class NPC
 */
 
-//CODE HERE
+class NPC extends Character {
+  constructor(name, type, location, phrase) {
+    super(name, type);
+    this.location = location;
+    this.phrase = phrase;
+  }
+
+  dialogue() {
+    return `${this.name}: ${this.phrase}`
+  }
+}
 
 /*
-    Create an NPC named Ralph who is a human located in Niceland. His phrase should be `I'm gonna wreck it!`. 
+    Create an NPC named Ralph who is a human located in Niceland. His phrase should be `I'm gonna wreck it!`.
     Store your new NPC in a variable called 'ralph'.
 */
 
-//CODE HERE
+const ralph = new NPC("Ralph", "human", "Niceland", "I'm gonna wreck it!");
 
 /*
     Next you're going to create three variables to store information about Ralph.
@@ -48,51 +67,71 @@
     Third, make a variable named ralphsLocation whose value will be Ralph's location.
 */
 
-//CODE HERE
+const ralphsInfo = ralph.getInfo();
+const ralphsDialogue = ralph.dialogue();
+const ralphsLocation = ralph.location;
 
 //////////////////PROBLEM 3////////////////////
 
 /*
-  Now you'll make a player class that extends Character 
+  Now you'll make a player class that extends Character
   Each player has all of the same properties as a character with the following additional properties:
     - healthLevel
     - attackLevel
   Each player has the following additional method:
     - defend(amount)
-      - Accepts an amount (another player's attackLevel) as a parameter and subtracts 
+      - Accepts an amount (another player's attackLevel) as a parameter and subtracts
         that amount from the current player's healthLevel
-      - If the healthLevel is above 0, it should return an object with 3 properties. 
-          - The first property should be named 'attackStrength' 
+      - If the healthLevel is above 0, it should return an object with 3 properties.
+          - The first property should be named 'attackStrength'
             and should be equal to the amount that the player is defending against.
-          - The second property should be named 'remainingHealth' 
+          - The second property should be named 'remainingHealth'
             and should be equal to the player's remaining healthLevel.
-          - The third property should be named 'message' 
+          - The third property should be named 'message'
             and should be equal to a string of 'NAME is still in the fight!'
       - Otherwise, it should return a string of 'NAME has been defeated!'
 
   Call your new class Player
 */
 
-//CODE HERE
-
+class Player extends Character {
+  constructor(name, type, healthLevel, attackLevel) {
+    super(name, type);
+    this.healthLevel = healthLevel;
+    this.attackLevel = attackLevel;
+  }
+  defend(amount) {
+    this.healthLevel -= amount;
+    if (this.healthLevel > 0) {
+      return new Object({
+        attackStrength: amount,
+        remainingHealth: this.healthLevel,
+        message: `${this.name} is still in the fight!`
+      });
+    } else {
+      return `${this.name} has been defeated!`;
+    }
+  }
+}
 /*
     Next, we'll create two Players.
-    Store the first in a variable called aang, his name should be 'Aang' 
+    Store the first in a variable called aang, his name should be 'Aang'
     and he's an airbender type with a 100 healthLevel and 100 attackLevel.
-    Store the second in a variable called ozai, his name should be 'Ozai' 
+    Store the second in a variable called ozai, his name should be 'Ozai'
     and he's a firebender type with a 100 healthLevel and 0 attackLevel.
 */
 
-//CODE HERE
+const aang = new Player("Aang", "airbender", 100, 100);
+const ozai = new Player("Ozai", "firebender", 100, 0);
 
 /*
-    Let's see how a fight between these two would go. 
-    Create a variable called 'battle' whose value is Ozai's 
-    defend method invoked with Aang's attackLevel passed in as an argument. 
+    Let's see how a fight between these two would go.
+    Create a variable called 'battle' whose value is Ozai's
+    defend method invoked with Aang's attackLevel passed in as an argument.
     (You can console log battle to see what happens)
 */
 
-//CODE HERE
+const battle = ozai.defend(aang.attackLevel);
 
 //////////////////PROBLEM 4////////////////////
 
@@ -110,15 +149,30 @@
       - Example string: `Wonder Woman used flight!`
 */
 
-//CODE HERE
+class Hero extends Player {
+  constructor(name, type, attackLevel, healthLevel) {
+    super(name, type, healthLevel, attackLevel);
+    this.superPowers = [];
+  };
+  addSuperPower(power) {
+    this.superPowers.push(power);
+  }
+  useSuperPower(index) {
+    return `${this.name} used ${this.superPowers[index]}!`;
+  }
+}
 
 /*
-  Create a hero named 'Fire Spitter' whose type is 'dragon'. 
-  Fire Spitter's healthLevel and attackLevels should both be 5000. 
+  Create a hero named 'Fire Spitter' whose type is 'dragon'.
+  Fire Spitter's healthLevel and attackLevels should both be 5000.
   Store this information in a variable called fireSpitter.
-  After you create Fire Spitter, add three super powers using the addSuperPower method. 
+  After you create Fire Spitter, add three super powers using the addSuperPower method.
   The first one should be 'spitting fire' and the other two are up to you.
   Last, invoke useSuperPower passing in 0 for the index and store the result in a variable called fireSpitterAttack.
 */
 
-//CODE HERE
+const fireSpitter = new Hero("Fire Spitter", "dragon", 5000, 5000);
+fireSpitter.addSuperPower("spitting fire");
+fireSpitter.addSuperPower("test1");
+fireSpitter.addSuperPower("test2");
+const fireSpitterAttack = fireSpitter.useSuperPower(0);
